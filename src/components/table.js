@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { StateContext } from "../adminPage";
 import { Pagination } from "../components";
 
-export const Table = () => {
-  const [data, setData] = useState(new Array(10).fill(""));
+export const Table = ({ dispatch }) => {
+  const [data, setData] = useState([]);
+  const userData = useContext(StateContext);
+
+  useEffect(() => {
+    let user = userData.users;
+    let filteredList = userData.filteredUserList;
+    let start = userData.currentPage * 10 - 10;
+    start = start === 0 ? start : start + 1;
+    let end = userData.currentPage * 10 + 1;
+
+    let temp =
+      filteredList.length > 0
+        ? filteredList.slice(start, end)
+        : user.slice(start, end);
+    setData([...temp]);
+  }, [userData]);
 
   return (
     <>
@@ -21,13 +37,13 @@ export const Table = () => {
         <tbody>
           {data.map((item, index) => {
             return (
-              <tr className="border-b" key={index}>
+              <tr className="border-b" key={item.id}>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Aaron Miles</td>
-                <td>aaron@geektrust.in</td>
-                <td>Member</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.role}</td>
                 <td className="flex gap-3">
                   <span className="hover:cursor-pointer">
                     <svg
@@ -71,7 +87,7 @@ export const Table = () => {
         <button className="bg-red-400 rounded-full px-5 py-2 text-white">
           Delete selected
         </button>
-        <Pagination />
+        <Pagination userData={userData} dispatch={dispatch} />
       </div>
     </>
   );

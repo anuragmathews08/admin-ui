@@ -1,10 +1,40 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { SET_CURRENT_PAGE, SET_START_PAGE } from "../actionTypes";
 
-export const Pagination = () => {
-  const [pageNumber, setPageNumber] = useState(new Array(5).fill(""));
-  const [startPage, setStartPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
+export const Pagination = ({ userData, dispatch }) => {
+  const [pageNumber, setPageNumber] = useState(
+    new Array(userData.pages).fill("")
+  );
+  const [startPage, setStartPage] = useState(userData.startPage);
+  const [totalPages, setTotalPages] = useState(userData.pages);
+  const [currentPage, setCurrentPage] = useState(userData.currentPage);
+
+  useEffect(() => {
+    setStartPage(userData.startPage);
+  }, [userData.startPage]);
+
+  useEffect(() => {
+    setCurrentPage(userData.currentPage);
+  }, [userData.currentPage]);
+
+  useEffect(() => {
+    setTotalPages(userData.pages);
+    setPageNumber(new Array(userData.pages).fill(""));
+  }, [userData.pages]);
+
+  useEffect(() => {
+    dispatch({
+      type: SET_START_PAGE,
+      payload: startPage,
+    });
+  }, [startPage]);
+
+  useEffect(() => {
+    dispatch({
+      type: SET_CURRENT_PAGE,
+      payload: currentPage,
+    });
+  }, [currentPage]);
 
   const handlePageChange = useCallback((pageNum) => {
     setCurrentPage(pageNum);
@@ -23,12 +53,16 @@ export const Pagination = () => {
   }, [startPage]);
 
   const handleFirtPageBtn = useCallback(() => {
-    setStartPage(1);
-  }, []);
+    if (startPage > 1) {
+      setStartPage(1);
+    }
+  }, [startPage]);
 
   const handleLastPageBtn = useCallback(() => {
-    setStartPage(totalPages - 4);
-  }, [totalPages]);
+    if (startPage + 4 < totalPages) {
+      setStartPage(totalPages - 4);
+    }
+  }, [totalPages, startPage]);
 
   return (
     <span className="flex items-center absolute left-[50%] -translate-x-[50%]">
