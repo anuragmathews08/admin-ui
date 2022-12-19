@@ -3,6 +3,7 @@ import {
   DELETE_SELECTED,
   FILTER_VALUE,
   INIT_VALUE,
+  SAVE_EDIT,
   SELECTED,
   SET_CURRENT_PAGE,
   SET_START_PAGE,
@@ -99,6 +100,33 @@ export const reducer = (state, action) => {
         filteredUserList: [...newFilteredList],
         selected: [],
         pages: totalPageCount,
+      };
+
+    case SAVE_EDIT:
+      let editFilterList = [...state.filteredUserList];
+      let editUserList = [...state.users];
+      let indexFilteredList = -1;
+      let indexUserList = -1;
+      for (let ind in editFilterList) {
+        if (editFilterList[ind].id === action.payload.id) {
+          indexFilteredList = ind;
+        }
+      }
+      for (let ind in editUserList) {
+        if (editUserList[ind].id === action.payload.id) {
+          indexUserList = ind;
+        }
+      }
+      if (indexFilteredList !== -1) {
+        editFilterList.splice(indexFilteredList, 1, action.payload);
+      }
+      if (indexUserList !== -1) {
+        editUserList.splice(indexUserList, 1, action.payload);
+      }
+      return {
+        ...state,
+        users: [...editUserList],
+        filteredUserList: [...editFilterList],
       };
 
     default:
