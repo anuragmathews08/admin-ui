@@ -139,7 +139,11 @@ export const Table = ({ dispatch }) => {
 
   return (
     <>
-      <table className="mt-4 table-auto text-left w-full" cellPadding={16}>
+      <table
+        className="mt-4 table-auto text-left w-full"
+        cellPadding={16}
+        data-testid="table"
+      >
         <thead className="border-b">
           <tr>
             <th>
@@ -156,7 +160,7 @@ export const Table = ({ dispatch }) => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-testid="table-body">
           {data.map((item, index) => {
             return (
               <tr
@@ -165,6 +169,7 @@ export const Table = ({ dispatch }) => {
                 style={{
                   backgroundColor: selected.includes(item.id) && "#cccccc",
                 }}
+                data-testid="data-row"
               >
                 <td>
                   <input
@@ -187,6 +192,7 @@ export const Table = ({ dispatch }) => {
                         editable.includes(item.id) && "1px solid #ccc",
                     }}
                     onChange={(e) => handleNameChange(item.id, e.target.value)}
+                    data-testid={`name-${index}`}
                   />
                 </td>
                 <td>
@@ -202,6 +208,7 @@ export const Table = ({ dispatch }) => {
                         editable.includes(item.id) && "1px solid #ccc",
                     }}
                     onChange={(e) => handleEmailChange(item.id, e.target.value)}
+                    data-testid={`email-${index}`}
                   />
                 </td>
                 <td>
@@ -217,6 +224,7 @@ export const Table = ({ dispatch }) => {
                         editable.includes(item.id) && "1px solid #ccc",
                     }}
                     onChange={(e) => handleRoleChange(item.id, e.target.value)}
+                    data-testid={`role-${index}`}
                   />
                 </td>
                 <td className="flex gap-3">

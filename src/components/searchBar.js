@@ -24,7 +24,7 @@ export const SearchBar = ({ dispatch }) => {
   const optimisedSearch = useCallback(debounce(handleSearch), []);
 
   return (
-    <div className="w-full">
+    <div className="w-full" data-testid="search-bar">
       <input
         type="text"
         placeholder="Search by name, email or role"
@@ -34,6 +34,7 @@ export const SearchBar = ({ dispatch }) => {
           setUserInput(e.target.value);
           optimisedSearch(e.target.value);
         }}
+        data-testid="input-box"
       />
     </div>
   );
