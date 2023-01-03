@@ -42,10 +42,14 @@ export const reducer = (state, action) => {
 
     case FILTER_VALUE:
       let filteredUserList = state.users.filter((user) => {
+        let userName = user.name.toLowerCase();
+        let userEmail = user.email.toLowerCase();
+        let userRole = user.role.toLowerCase();
+        let payload = action.payload.toLowerCase();
         if (
-          user.name.includes(action.payload) ||
-          user.email.includes(action.payload) ||
-          user.role.includes(action.payload)
+          userName.includes(payload) ||
+          userEmail.includes(payload) ||
+          userRole.includes(payload)
         ) {
           return user;
         }

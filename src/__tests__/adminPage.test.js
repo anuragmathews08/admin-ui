@@ -14,4 +14,16 @@ describe("Admin Page tests", () => {
       expect(screen.getAllByTestId("data-row")).toHaveLength(1);
     });
   });
+
+  it("should contain only one row for upper case search", async () => {
+    render(<AdminPage />);
+    const inputBoxEle = screen.getByTestId("input-box");
+    await userEvent.type(inputBoxEle, "AARON", { delay: 200 });
+    await waitFor(() => {
+      expect(screen.getByTestId("input-box")).toHaveValue("AARON");
+    });
+    await waitFor(() => {
+      expect(screen.getAllByTestId("data-row")).toHaveLength(1);
+    });
+  });
 });
